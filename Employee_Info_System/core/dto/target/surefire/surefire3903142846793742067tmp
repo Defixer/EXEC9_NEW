@@ -1,0 +1,5 @@
+#surefire
+#Tue Aug 23 10:15:06 PHT 2016
+user.dir=/home/exist/EXEC8/Employee_Info_System/core/dto
+localRepository=/home/exist/.m2/repository
+basedir=/home/exist/EXEC8/Employee_Info_System/core/dto

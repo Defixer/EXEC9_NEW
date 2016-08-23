@@ -1,0 +1,300 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ page import="com.hibernate.exercise6.dto.*"%>
+<%@ page import="java.io.*"%>
+<%@ page import="java.util.*"%>
+
+<html>
+	<head>
+		<title>Employee</title>
+	</head>
+	<body>
+		<div>
+			<div class = "row">
+				<c:forEach var = "err" items = "${errors}">
+					<div class = "column column-6"><span style = "color:red">${err}</span></div>
+				</c:forEach>
+				
+				<c:set var = "employee" value = "${employee}"/>
+				<c:set var = "name" value = "${employee.getName()}"/>
+				<c:set var = "address" value = "${employee.getAddress}"/>
+				<form action = "${pageContext.request.contextPath}/MainPage" method = "post">
+				<input type = "hidden" name = "employeeID" value = "${employee.id}">
+				<fmt:formatDate pattern = "yyyy/MM/dd" value = "${employee.otherinfo.birthday}" var = "birthday"/>
+				<fmt:formatDate pattern = "yyyy/MM/dd" value = "${employee.otherinfo.hireDate}" var = "hireDate">
+				<div class = "column column-6" align = "center">
+					<fieldset style = "padding:1%">
+						<legend>Full Name:</legend>
+						<table>
+							<div>
+								<tr>
+									<td>
+										Title:
+									</td>
+									<td>
+										<input type = "text" name = "title" value = "${employee.name.title}">
+								</tr>
+								<tr>
+									<td>
+										<span class = "required">*</span></div>First Name:
+									</td>
+									<td>
+										<input type = "text" name = "firstName" value = "${employee.name.firstName}">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<span class = "required">*</span></div>Middle Name:
+									</td>
+									<td>
+										<input type = "text" name = "middleName" value = "${employee.name.middleName}">
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<span class = "required">*</span></div>Last Name:
+									</td>
+									<td>
+										<input type = "text" name = "lastName" value = "${employee.name.lastName}">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										Suffix:
+									</td>
+									<td>
+										<input type = "text" name = "suffix" value = "${employee.name.suffix}">
+								</tr>
+							</div>
+						</table>
+					</fieldset>
+				</div>
+				
+				<div class = "column column-6" align = "center">
+					<fieldset style = "padding:1%">
+						<legend>Other Information</legend>
+						<table>
+							<div>
+								<tr>
+									<td>
+										<span class = "required">*</span></div>Birthday
+									</td>
+									<td>
+										<input type = "text" name = "birthday" value = "${employee.otherinfo.birthday}" placeholder = "YYYY/MM/DD">
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<span class = "required">*</span>Employed:
+									</td>
+									<td>
+										<input type = "radio" name = "employed" value = "yes" ${otherinfo.getIsEmployed() ? 'checked' : ''}>Yes
+										<input type = "radio" name = "employed" value = "no" ${otherinfo.getIsEmployed() ? 'checked' : ''}>Not Employed
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										Date Hired:
+									</td>
+									<td>
+										<input type = "text" name = "dateHired" value = "${employee.otherinfo.hireDate}" placeholder = "YYYY/MM/DD"><span class = "required">*(if employed)</span>
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										Roles:
+									</td>
+									<td>
+										<c:set var = "sdChecked" value = ""/>
+										<c:set var = "qaeChecked" value = ""/>
+										<c:set var = "ieChecked" value = ""/>
+										<c:set var = "foChecked" value = ""/>
+										<c:set var = "hroChecked" value = ""/>
+										<c:set var = "daChecked" value = ""/>
+										
+										<c:forEach var = "role" items = "${employee.roles}">
+											<c:if test = "${role.roleName.equals('Software Developer')}">
+												<c:set var = "sdChecked" value = "checked"/>
+											</c:if>
+											<c:if test = "${role.roleName.equals('Quality Assurance Engineer')}">
+												<c:set var = "qaeChecked" value = "checked"/>
+											</c:if>
+											<c:if test = "${role.roleName.equals('Infrastructure Engineer')}">
+												<c:set var = "ieChecked" value = "checked"/>
+											</c:if>
+											<c:if test = "${role.roleName.equals('Finance Officer')}">
+												<c:set var = "foChecked" value = "checked"/>
+											</c:if>
+											<c:if test = "${role.roleName.equals('Human Resources Officer')}">
+												<c:set var = "hroChecked" value = "checked"/>
+											</c:if>
+											<c:if test = "${role.roleName.equals('Database Administrator')}">
+												<c:set var = "daChecked" value = "checked"/>
+											</c:if>
+										</c:forEach>
+										<input type = "checkbox" name = "role" value = "Software Developer" ${sdChecked}>Developer:<br/>
+										<input type = "checkbox" name = "role" value = "Quality Assurance Engineer" ${qaeChecked}>Quality Assurance Engineer:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class = "required">*(if employed)</span><br/>
+										<input type = "checkbox" name = "role" value = "Infrastructure Engineer" ${ieChecked}/>Infrastructure Engineer:
+										<input type = "checkbox" name = "role" value = "Finance Officer" ${foChecked}/>Finance Officer:
+										<input type = "checkbox" name = "role" value = "Human Resources Officer" ${foChecked}/>Finance Officer:
+										<input type = "checkbox" name = "role" value = "Database Administrator" ${daChecked}/>Database Administrator:
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<span class = "required">*</span></div>GWA:
+									</td>
+									<td>
+										<input type = "text" name = "gwa" value = "${employee.otherinfo.gwa}">
+									</td>
+								</tr>
+							</div>
+						</table>
+					</fieldset>
+				</div>
+				
+				<div class = "column column-6" align = "center">
+					<fieldset style = "padding:1%">
+						<legend>Address:</legend>
+						<table>
+							<div>
+								<tr>
+									<td>
+										<span class = "required">*</span></div>Street No:
+									</td>
+									<td>
+										<input type = "text" name = "streetNo" value = "${employee.address.streetNo}">
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<span class = "required">*</span></div>Barangay:
+									</td>
+									<td>
+										<input type = "text" name = "barangay" value = "${employee.address.brgy}">
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<span class = "required">*</span></div>CityMunicipality:
+									</td>
+									<td>
+										<input type = "text" name = "cityMunicipality" value = "${employee.address.cityMunicipality}">
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<span class = "required">*</span></div>Zipcode:
+									</td>
+									<td>
+										<input type = "text" name = "zipcode" value = "${employee.address.zipcode}">
+									</td>
+								</tr>
+							</div>
+						</table>
+					</fieldset>
+				</div>
+				
+				<div class = "column column-6" align = "center">
+					<fieldset style= "padding:1%">
+						<legend>Contact:</legend>
+						<table>
+							<div>
+								<c:set var = "landlineChecked" value = ""/>
+								<c:set var = "mobileChecked" value = ""/>
+								<c:set var = "emailChecked" value = ""/>
+								<c:set var = "landlineValue" value = ""/>
+								<c:set var = "mobileValue" value = ""/>
+								<c:set var = "emailValue" value = ""/>
+								<c:set var = "landlineId" value = ""/>
+								<c:set var = "mobileId" value = ""/>
+								<c:set var = "emailId" value = ""/>
+								
+								<c:forEach var = "contact" items = "${person.getContacts()}">
+									<c:if test = "${contact.contactType == 'landline'}">
+										<c:set var = "landlineChecked" value = "checked"/>
+										<c:set var = "landlineValue" value = "${contact.contactDetails}"/>
+										<c:set var = "landlineId" value = "${contact.id}">
+									</c:if>
+									<c:if test = "${contact.contactType == 'mobile'}">
+										<c:set var = "mobileChecked" value = "checked"/>
+										<c:set var = "mobileValue" value = "${contact.contactDetails}"/>
+										<c:set var = "mobileId" value = "${contact.id}">
+									</c:if>
+									<c:if test = "${contact.contactType == 'email'}">
+										<c:set var = "emailChecked" value = "checked"/>
+										<c:set var = "emailValue" value = "${contact.contactDetails}"/>
+										<c:set var = "emailId" value = "${contact.id}">
+									</c:if>
+								</c:forEach>
+								
+								<tr>
+									<td>
+										<input type = "checkbox" onclick = document.getElementById('landline').disabled=!this.checked;" name = "contacts" value = "landline" ${landlineChecked}/>
+									</td>
+									<td>
+										<input type = "hidden" name = "landlineId" value = "${landlineId}">
+										<input type = "text" name = "landline" id = "landline" value = "${landlineValue}">
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<input type = "checkbox" onclick = document.getElementById('mobile').disabled=!this.checked;" name = "contacts" value = "landline" ${mobileChecked}/>
+									</td>
+									<td>
+										<input type = "hidden" name = "mobileId" value = "${mobileId}">
+										<input type = "text" name = "mobile" id = "mobile" value = "${mobileValue}">
+									</td>
+								</tr>
+								
+								<tr>
+									<td>
+										<input type = "checkbox" onclick = document.getElementById('email').disabled=!this.checked;" name = "contacts" value = "email" ${emailChecked}/>
+									</td>
+									<td>
+										<input type = "hidden" name = "emailId" value = "${emailId}">
+										<input type = "text" name = "email" id = "mobile" value = "${emailValue}">
+									</td>
+								</tr>
+							</div>
+						</table>
+					</fieldset>
+				</div>
+				
+				<div align = "center">
+					<c:choose>
+						<c: when test = "${empty id}">
+							<input type = "submit" value = "add" align = "center"/>
+						</c:when>
+						<c:otherwise>
+							<input type = "submit" value = "save" align = "center"/>
+						</c:otherwise>
+					</c:choose>
+				</div>
+				</form>
+				
+				<div>
+				<div align = "center">
+				<form action = "${pageContext.request.contextPath}/MainPage" method = "get">
+					<input type = "submit" value = "cancel" align = "center"/>
+				</form>
+				</div>
+			</div>
+		</div>
+		
+		<style>
+			.required{
+				color:red;
+			}
+		</style>
+	</body>							
+</html>
